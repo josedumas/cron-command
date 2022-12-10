@@ -430,7 +430,14 @@ class Cron_Event_Command extends WP_CLI_Command {
 	 */
 	protected static function get_cron_events() {
 
-		$crons  = _get_cron_array();
+		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+		$pre = apply_filters( 'pre_get_ready_cron_jobs', null );
+		if ( null !== $pre ) {
+			$crons = $pre;
+		} else {
+			$crons = _get_cron_array();
+		}
+
 		$events = array();
 
 		if ( empty( $crons ) ) {
